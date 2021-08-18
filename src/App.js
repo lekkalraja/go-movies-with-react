@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom"
+import Movies from './components/Movies'
+import Movie from './components/Movie'
+import Admin from './components/Admin'
+import Home from './components/Home'
+import Categories from './components/Categories'
+
 export default function App() {
     return(
         <Router>
@@ -18,6 +24,9 @@ export default function App() {
                                     <Link to="/movies"> Movies </Link>
                                 </li>
                                 <li className="list-group-item">
+                                    <Link to="/by-category"> Categories </Link>
+                                </li>
+                                <li className="list-group-item">
                                     <Link to="/admin"> Movies Catalogue </Link>
                                 </li>
                             </ul>
@@ -25,8 +34,15 @@ export default function App() {
                     </div>
                     <div className="col-md-10">
                         <Switch>
-                            <Route path="/movies">
-                                <Movies />
+                            <Route path="/movies/:id" component={Movie}/>
+                            <Route path="/movies" component={Movies}/>
+                            <Route
+                                exact
+                                path="/by-category/:title"
+                                render={props => <Category {...props}/>}
+                            />
+                            <Route path="/by-category">
+                                <Categories />
                             </Route>
                             <Route path="/admin">
                                 <Admin />
@@ -42,20 +58,9 @@ export default function App() {
     )
 }
 
-function Home() {
+function Category() {
+    let {title} = useParams()
     return(
-        <h4>Home</h4>
-    )
-}
-
-function Movies() {
-    return(
-        <h4>Movies</h4>
-    )
-}
-
-function Admin() {
-    return(
-        <h4>Admin</h4>
+        <h2>It's {title}</h2>
     )
 }
